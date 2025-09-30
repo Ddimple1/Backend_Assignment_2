@@ -1,0 +1,24 @@
+// Importing morgan and express
+import morgan from "morgan";
+import express, {Express} from "express";
+import routes from "./api/v1/routes";
+
+const app : Express = express();
+app.use(express.json()); //then parse JSON
+
+// routes 
+app.use( "/api/V1",routes);  // then load routes
+
+// Use morgan for HTTP request logging
+app.use(morgan("combined")); // log requests first.
+
+app.listen(3000, () => {
+    console.log("Server is running on port 3000");
+});
+
+export default app;
+
+// Health check endpoint
+app.get("/health", (req, res) => {
+    res.send("Server is healthy");
+});
