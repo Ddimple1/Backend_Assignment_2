@@ -1,5 +1,6 @@
 import express, {Router} from "express";
 import * as employeeController from "../Controllers/employeeController";
+import * as branchController from "../Controllers/branchController";
 
 const router: Router = express.Router();
 
@@ -26,4 +27,11 @@ router.post("/employees", employeeController.createEmployee);
 router.put("/employees/:id", employeeController.updateEmployee);
 router.delete("/employees/:id", employeeController.deleteEmployee);
 
+
+// Routes defined for Branches
+router.get("/branches", branchController.getAllBranches);
+router.post("/branches", branchController.createBranch);
+router.put("/branches/:id", branchController.updateBranch);
+router.delete("/branches/:id", branchController.deleteBranch);
+    
 export default router;
