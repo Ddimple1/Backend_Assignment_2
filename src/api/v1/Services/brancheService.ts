@@ -1,6 +1,6 @@
 import {Branch, branches} from "../../../data/branches";
 
-export const getAllbranches = (): Branch[] => {
+export const getAllBranches = (): Branch[] => {
     return branches;
 };
 
