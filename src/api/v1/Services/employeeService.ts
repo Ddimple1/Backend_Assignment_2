@@ -30,3 +30,15 @@ export const deleteEmployee = (id: number): boolean => {
     }
     return false;
 };
+
+// Additional logical operators
+
+// Get employees by branchId
+export const getEmployeesByBranch = (branchId: number): Employee[] => {
+    return employees.filter(employee => employee.branchId === branchId);
+};
+
+// Get employees by department
+export const getEmployeesByDepartment = (department: string): Employee[] => {
+    return employees.filter(employee => employee.department === department);
+};

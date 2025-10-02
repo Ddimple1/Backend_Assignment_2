@@ -1,6 +1,7 @@
 import express, {Router} from "express";
 import * as employeeController from "../Controllers/employeeController";
 import * as branchController from "../Controllers/branchController";
+import { getEmployeesByBranch, getEmployeesByDepartment } from "../Services/employeeService";
 
 const router: Router = express.Router();
 
@@ -33,5 +34,9 @@ router.get("/branches", branchController.getAllBranches);
 router.post("/branches", branchController.createBranch);
 router.put("/branches/:id", branchController.updateBranch);
 router.delete("/branches/:id", branchController.deleteBranch);
+
+// Additional logical operators
+router.get("/employees/branch/:branchId", getEmployeesByBranch);
+router.get("/employees/department/:department", getEmployeesByDepartment);
     
 export default router;

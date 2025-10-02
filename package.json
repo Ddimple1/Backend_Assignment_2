@@ -8,8 +8,6 @@
     "build": "tsc",
     "test": "jest"
   },
-
-  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Ddimple1/Backend_Assignment_2.git"
@@ -37,5 +35,4 @@
     "express": "^5.1.0",
     "morgan": "^1.10.1"
   }
-  
 }

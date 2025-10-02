@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as employeeService from "../Services/employeeService";
+import { employees } from "../../../data/employees";
 
 // For Get all method
 export const getAllEmployees = (req: Request, res: Response): void => {
@@ -42,4 +43,32 @@ export const deleteEmployee = (req: Request, res: Response): void => {
   } else {
     res.status(404).send("Employee not found");
   }
+};
+
+// For additional logical operators
+
+// Get employees by BranchId
+export const getEmployeesByBranch = (req: Request, res: Response) => {
+  const branchIdString = req.params.branchId
+  const branchId = parseInt(branchIdString, 10);
+
+  if (!branchId || branchId <= 0) {
+    return res.status(400).json({ message: "Invalid branchId" });
+
+  }
+
+  const result = employeeService.getEmployeesByBranch(branchId);
+  return res.status(200).json(result);
+};
+
+// Get employees by department
+export const getEmployeesByDepartment = (req: Request, res: Response) => {
+  const department = req.params.department;
+
+  if (!department) {
+    return res.status(400).json({ message: "Department is required" });
+  }
+
+  const result = employees.filter(emp => emp.department === department);
+  return res.status(200).json(result);
 };
