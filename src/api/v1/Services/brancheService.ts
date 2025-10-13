@@ -26,3 +26,6 @@ export const deleteBranch = (id: number): string => {
     }
     return "Branch not found";
 };
+
+export const getBranchById = (id: number): Branch | undefined =>
+    branches.find(b => b.id === id);

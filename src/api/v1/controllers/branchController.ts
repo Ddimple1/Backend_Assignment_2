@@ -62,3 +62,14 @@ export const deleteBranch = (req: Request, res: Response): void => {
     branchService.deleteBranch(id);
     res.status(200).json({message: "Branch deleted."});
 };
+
+export const getBranchById = (req: Request, res: Response) => {
+  const id = parseInt(req.params.id, 10);
+  const branch = branchService.getBranchById(id);
+
+  if (!branch) {
+    return res.status(404).json({ message: "Branch not found" });
+  }
+
+  return res.status(200).json({ data: branch });
+};
