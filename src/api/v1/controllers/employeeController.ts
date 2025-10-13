@@ -14,7 +14,7 @@ export const createEmployee = (req: Request, res: Response): void => {
   if (!newEmployee.name || !newEmployee.position || !newEmployee.department) {
     res.status(400).send("Missing required fields");
     return;
-  }
+  };
 
   const createdEmployee = employeeService.createEmployee(newEmployee);
   res.status(201).json({ message: "Employee created", data: createdEmployee });
@@ -43,6 +43,15 @@ export const deleteEmployee = (req: Request, res: Response): void => {
   } else {
     res.status(404).send("Employee not found");
   }
+};
+
+// for get EmploueeByID method
+export const getEmployeeByID = (req: Request, res: Response) => {
+  const id = parseInt(req.params.id);
+  const employee = employees.find(emp => emp.id === id);
+
+  if (!employee)  return res.status(404).json({ message: "Employee not found"});
+    res.status(200).json({data:employee});
 };
 
 // For additional logical operators

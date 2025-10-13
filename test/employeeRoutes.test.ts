@@ -1,5 +1,6 @@
 import request from "supertest";
 import app from "../src/app";
+import { employees } from "../src/data/employees";
 
 //Tests for employee endpoints
 
@@ -47,6 +48,7 @@ describe("Post /api/v1/employees", () => {
         // Assert
         expect(res.status).toBe(400);
     });
+});
 
 // UPDATE Employee
 describe("PUT /api/v1/employees/:id", () => {
@@ -97,5 +99,26 @@ describe("DELETE /api/v1/employees/:id", () => {
       // ASSERT
       expect(res.status).toBe(404);
     });
+
+});
+
+// GetemployeeByID test case
+describe("GET /api/v1/employees/:id", () => {
+  it("should return an employee by ID from existing data", async () => {
+    // Pick an existing employee from the data file
+    const existingEmployee = employees[0]; // for example, the first employee
+    const employeeId = existingEmployee.id;
+
+    const res = await request(app).get(`/api/v1/employees/${employeeId}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.data).toHaveProperty("id", employeeId);
+    expect(res.body.data.name).toBe(existingEmployee.name);
+    expect(res.body.data.position).toBe(existingEmployee.position);
+  });
+
+  it("should return 404 for a non-existent employee ID", async () => {
+    const res = await request(app).get("/api/v1/employees/999"); // 
+    expect(res.status).toBe(404);
   });
 });

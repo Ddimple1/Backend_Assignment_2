@@ -31,6 +31,9 @@ export const deleteEmployee = (id: number): boolean => {
     return false;
 };
 
+export const getEmployeeByID = (id: number): Employee | undefined =>
+    employees.find(e => e.id === id);
+
 // Additional logical operators
 
 // Get employees by branchId
