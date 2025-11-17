@@ -1,6 +1,9 @@
 // Importing morgan and express
 import morgan from "morgan";
 import express, {Express} from "express";
+import dotenv from "dotenv";
+
+dotenv.config();
 import routes from "./api/v1/routes/routes";
 
 const app : Express = express();
