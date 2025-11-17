@@ -4,6 +4,8 @@ import express, {Express} from "express";
 import dotenv from "dotenv";
 
 dotenv.config();
+import setupSwagger from "config/swagger";
+
 import routes from "./api/v1/routes/routes";
 
 const app : Express = express();
@@ -25,5 +27,7 @@ app.use("/api/v1/employees", routes)
 
 // branches endpoints route
 app.use("/api/v1/branches", routes);
+
+setupSwagger(app);
 
 export default app;
