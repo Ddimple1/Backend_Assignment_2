@@ -5,6 +5,7 @@ import branchRoutes from "./branchesRoutes";
 const router: Router = express.Router();
 
 router.use("/employees", employeeRoutes);
-router.use("/branches", branchRoutes);
+router.use("/branches", branchRoutes); 
+
 
 export default router;
