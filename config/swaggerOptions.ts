@@ -29,11 +29,12 @@ const swaggerOptions: swaggerJsdoc.Options = {
                 bearerAuth: [],
             },
         ],
+        
     },
-    apis: ["./src/api/v1/routes/*.ts", "./src/api/v1/validations/*.ts"], // Path to the API docs and schemas
+    apis: ["./src/api/v1/routes/branchesRoutes","./src/api/v1/routes/employeeRoutes", "./src/api/v1/Validation/branchValidation", "./src/api/v1/Validation/employeeValidation"], 
 };
 
 // Generate the Swagger spec
 export const generateSwaggerSpec = (): object => {
     return swaggerJsdoc(swaggerOptions);
-};
+}

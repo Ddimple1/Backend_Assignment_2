@@ -16,14 +16,10 @@ const router: Router = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/validations/branchValidation'
+ *               $ref: '#/components/schemas/branchValidation'
  *       '500':
  *         description: Server error
- */
-router.get("/", branchController.getAllBranches);
-/**
- * @openapi
- * /api/branches:
+ * 
  *   post:
  *     summary: Create a new branch
  *     tags: [Branches]
@@ -32,23 +28,20 @@ router.get("/", branchController.getAllBranches);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/validations/Branch'
+ *             $ref: '#/components/schemas/branchValidation'
  *     responses:
  *       '201':
  *         description: Branch created successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/validations/branchValidation'
+ *               $ref: '#/components/schemas/branchValidation'
  *       '400':
  *         description: Validation error
  *       '500':
  *         description: Server error
- */
-router.post("/", validateBranch, branchController.createBranch);
-/**
- * @openapi
- * /api/branches/{id}:
+ * 
+  * /api/branches/{id}:
  *   put:
  *     summary: Update an existing branch by ID
  *     tags: [Branches]
@@ -64,25 +57,21 @@ router.post("/", validateBranch, branchController.createBranch);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/validations/Branch'
+ *             $ref: '#/components/schemas/branchValidation'
  *     responses:
  *       '200':
  *         description: Branch updated successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/validations/branchValidation'
+ *               $ref: '#/components/schemas/branchValidation'
  *       '400':
  *         description: Validation error
  *       '404':
  *         description: Branch not found
  *       '500':
  *         description: Server error
- */
-router.put("/:id",validateBranch,  branchController.updateBranch);
-/**
- * @openapi
- * /api/branches/{id}:
+ * 
  *   delete:
  *     summary: Delete a branch by ID
  *     tags: [Branches]
@@ -100,11 +89,7 @@ router.put("/:id",validateBranch,  branchController.updateBranch);
  *         description: Branch not found
  *       '500':
  *         description: Server error
- */
-router.delete("/:id", validateBranch, branchController.deleteBranch);
-/**
- * @openapi
- * /api/branches/{id}:
+ * 
  *   get:
  *     summary: Get a branch by ID
  *     tags: [Branches]
@@ -121,12 +106,16 @@ router.delete("/:id", validateBranch, branchController.deleteBranch);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/validations/branchValidation'
+ *               $ref: '#/components/schemas/branchValidation'
  *       '404':
  *         description: Branch not found
  *       '500':
  *         description: Server error
  */
+router.get("/", branchController.getAllBranches);
+router.post("/", validateBranch, branchController.createBranch);
+router.put("/:id",validateBranch,  branchController.updateBranch);
+router.delete("/:id", validateBranch, branchController.deleteBranch);
 router.get("/:id", branchController.getBranchById);
 
 export default router;

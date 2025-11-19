@@ -4,145 +4,136 @@ import { getEmployeesByBranch, getEmployeesByDepartment } from "../Services/empl
 import { validateEmployee } from "../middleware/logRequest";
 
 const router: Router = express.Router();
+
 /**
  * @openapi
- * /api/employees:
+ * /api/employee:
  *   get:
  *     summary: Retrieve a list of all employees
- *     tags: [Employees]
- *     parameters: 
+ *     tags:
+ *       - Employees
+ *     parameters:
  *       - name: limit
  *         in: query
  *         required: false
+ *         description: Maximum number of employees to return
  *         schema:
  *           type: integer
  *           minimum: 1
- *           maximim: 100
+ *           maximum: 100
  *           default: 20
- *         description: Maximum number of employees to return
- *        - name: department
- *          in: query
- *          required: false
- *          schema:
- *            type: integer
- *            minimum: 1
- *            default: 1
- *          description: Filter emplolyees by department name
- *         - name: sort
- *           in: query
- *           required: false
- *           schema:
- *             type: string
- *             enum: [asc, desc]
- *           description: Sort employees by ID in ascending or descending order
- *       responses:
- *         '200':
- *           description: successfully retrieved employees
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   employees:
- *                     type: array
- *                     items:
- *                       $ref: '#/components/validations/Employee'
- *                   total:
- *                     type: integer
- */
-router.get("/", employeeController.getAllEmployees);
-/**
- * @openapi
- * /api/employees:
+ *       - name: department
+ *         in: query
+ *         required: false
+ *         description: Filter employees by department id
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *       - name: sort
+ *         in: query
+ *         required: false
+ *         description: Sort employees by ID in ascending or descending order
+ *         schema:
+ *           type: string
+ *           enum:
+ *             - asc
+ *             - desc
+ *     responses:
+ *       '200':
+ *         description: Successfully retrieved employees
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 employees:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/employeeValidation'
+ *                 total:
+ *                   type: integer
  *   post:
  *     summary: Create a new employee
- *     tags: [Employees]
+ *     tags:
+ *       - Employees
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/validations/Employee'
+ *             $ref: '#/components/schemas/employeeValidation'
  *     responses:
  *       '201':
- *         description: Employee Created successfully
+ *         description: Employee created successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/validations/employeeValidation'
+ *               $ref: '#/components/schemas/employeeValidation'
  *       '400':
  *         description: Bad request - validation failed
  *       '500':
- *         description: Server Error
- */
-router.post("/", validateEmployee, employeeController.createEmployee);
-/**
- * @openapi
- * /api/employees/{id}:
+ *         description: Server error
  *   put:
  *     summary: Update an existing employee by ID
- *     tags: [Employees]
+ *     tags:
+ *       - Employees
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
+ *         description: ID of the employee to update
  *         schema:
  *           type: integer
- *         description: ID of the employee to update
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/validations/Employee'
+ *             $ref: '#/components/schemas/employeeValidation'
  *     responses:
  *       '200':
  *         description: Employee updated successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/validations/employeeValidation'
+ *               $ref: '#/components/schemas/employeeValidation'
  *       '400':
  *         description: Bad request - validation failed
  *       '500':
- *         description: Server Error
- */
-router.put("/:id", validateEmployee, employeeController.updateEmployee);
-/**
- * @openapi
- * /api/employees/{id}:
+ *         description: Server error
+ * 
  *   delete:
  *     summary: Delete an employee by ID
- *     tags: [Employees]
+ *     tags:
+ *       - Employees
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
+ *         description: ID of the employee to delete
  *         schema:
  *           type: integer
- *         description: ID of the employee to delete
  *     responses:
  *       '200':
  *         description: Employee deleted successfully
  *       '404':
  *         description: Employee not found
  *       '500':
- *         description: Server Error
- */
-router.delete("/:id", validateEmployee, employeeController.deleteEmployee);
-/**
- * @openapi
+ *         description: Server error
+ * 
  * /api/employees/branch/{branchId}:
  *   get:
  *     summary: Get employees by branch ID
- *     tags: [Employees]
+ *     tags:
+ *       - Employees
  *     parameters:
- *       - name: branchid
+ *       - name: branchId
  *         in: path
  *         required: true
+ *         description: Branch ID to filter employees
  *         schema:
  *           type: integer
- *         description: Branch ID to filter employees
  *     responses:
  *       '200':
  *         description: Employees belonging to the specified branch
@@ -154,28 +145,26 @@ router.delete("/:id", validateEmployee, employeeController.deleteEmployee);
  *                 employees:
  *                   type: array
  *                   items:
- *                      $ref: '#/components/validations/employeeValidation'
+ *                     $ref: '#/components/schemas/employeeValidation'
  *                 total:
  *                   type: integer
  *       '404':
  *         description: No employees found for specified branch
  *       '500':
- *         description: Server Error
- */
-router.get("/branch/:branchId", getEmployeesByBranch);
-/**
- * @openapi
+ *         description: Server error
+ * 
  * /api/employees/department/{department}:
  *   get:
  *     summary: Get employees by department name
- *     tags: [Employees]
+ *     tags:
+ *       - Employees
  *     parameters:
  *       - name: department
  *         in: path
  *         required: true
+ *         description: Department name to filter employees
  *         schema:
  *           type: string
- *         description: department name to filter employees
  *     responses:
  *       '200':
  *         description: Employees belonging to the specified department
@@ -187,40 +176,43 @@ router.get("/branch/:branchId", getEmployeesByBranch);
  *                 employees:
  *                   type: array
  *                   items:
- *                      $ref: '#/components/validations/employeeValidation'
+ *                     $ref: '#/components/schemas/employeeValidation'
  *                 total:
  *                   type: integer
  *       '404':
- *         description: No employees found for the given deprtment
+ *         description: No employees found for the given department
  *       '500':
- *         description: Server Error
- */
-router.get("/department/:department", getEmployeesByDepartment);
-/**
- * @openapi
- * /api/employees/{id}:
+ *         description: Server error
+ * 
+  * /api/employees/{id}:
  *   get:
  *     summary: Get an employee by ID
- *     tags: [Employees]
+ *     tags:
+ *       - Employees
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
+ *         description: ID of the employee to retrieve
  *         schema:
  *           type: integer
- *         description: ID of the employee to retrieve
  *     responses:
  *       '200':
  *         description: Employee found
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/validations/employeeValidation'
+ *               $ref: '#/components/schemas/employeeValidation'
  *       '404':
  *         description: Employee not found
  *       '500':
  *         description: Server error
  */
+router.get("/", employeeController.getAllEmployees);
+router.put("/:id", validateEmployee, employeeController.updateEmployee);
+router.delete("/:id", validateEmployee, employeeController.deleteEmployee);
+router.get("/branch/:branchId", getEmployeesByBranch);
+router.get("/department/:department", getEmployeesByDepartment);
 router.get("/:id", employeeController.getEmployeeByID);
 
 export default router;
