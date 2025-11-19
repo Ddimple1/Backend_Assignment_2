@@ -1,31 +1,67 @@
-import {Branch, branches} from "../../../data/branches";
+import {Branch} from "../models/branchmodel";
+import * as firestoreRepository from "../repositories/firestoreRepository";
 
-export const getAllBranches = (): Branch[] => {
-    return branches;
+const COLLECTION_NAME = "branches";
+
+/**
+ * Get all branches.
+ */
+export const getAllBranches = async (): Promise<Branch[]> => {
+  try {
+    const snapshot = await firestoreRepository.getDocuments(COLLECTION_NAME);
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Branch));
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    throw new Error(`Failed to fetch branches: ${errorMessage}`);
+  }
 };
 
-export const createBranch = (branch: Branch): string => {
-    branches.push(branch);
-    return "Branch added successfully."
+/**
+ * Get a branch by ID.
+ */
+export const getBranchById = async (id: string): Promise<Branch | null> => {
+  try {
+    const doc = await firestoreRepository.getDocumentById(COLLECTION_NAME, id);
+    if (!doc || !doc.exists) return null;
+    return { id: doc.id, ...doc.data() } as Branch;
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    throw new Error(`Failed to fetch branch ${id}: ${errorMessage}`);
+  }
 };
 
-export const updateBranch = (id: number, updatedBranch: Branch): string => {
-    const index = branches.findIndex(branches => branches.id === id);
-    if (index !== -1) {
-        branches[index] = updatedBranch;
-        return "Branch updated";
-    }
-    return "Branch not found";
+/**
+ * Create a new branch.
+ */
+export const createBranch = async (branch: Branch): Promise<string> => {
+  try {
+    return await firestoreRepository.createDocument(COLLECTION_NAME, branch);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    throw new Error(`Failed to create branch: ${errorMessage}`);
+  }
 };
 
-export const deleteBranch = (id: number): string => {
-    const index = branches.findIndex(branches => branches.id === id);
-    if (index !== -1) {
-        branches.splice(index, 1);
-        return "Branch deleted";
-    }
-    return "Branch not found";
+/**
+ * Update an existing branch.
+ */
+export const updateBranch = async (branch: Branch): Promise<void> => {
+  try {
+    await firestoreRepository.updateDocument(COLLECTION_NAME, branch.id, branch);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    throw new Error(`Failed to update branch ${branch.id}: ${errorMessage}`);
+  }
 };
 
-export const getBranchById = (id: number): Branch | undefined =>
-    branches.find(b => b.id === id);
+/**
+ * Delete a branch.
+ */
+export const deleteBranch = async (branch: Branch): Promise<void> => {
+  try {
+    await firestoreRepository.deleteDocument(COLLECTION_NAME, branch.id);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    throw new Error(`Failed to delete branch ${branch.id}: ${errorMessage}`);
+  }
+};
